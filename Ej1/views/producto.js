@@ -1,7 +1,7 @@
 $(document).ready(function() {
     function cargarProductos() {
         $.ajax({
-            url: '../controllers/productos.controllers.php', // Ruta a tu archivo controlador de productos
+            url: '../controllers/productos.controllers.php',
             method: 'GET',
             success: function(data) {
                 console.log("Respuesta del servidor:", data);
