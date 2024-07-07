@@ -6,6 +6,8 @@ require_once('../models/productos.model.php');
 $producto = new Clase_Productos();
 $metodo = $_SERVER['REQUEST_METHOD'];
 
+header('Content-Type: application/json'); // Asegura que la respuesta sea JSON
+
 switch ($metodo) {
     case "GET":
         if (isset($_GET["ProductoId"])) {
@@ -46,7 +48,7 @@ switch ($metodo) {
                 echo json_encode(array("message" => "Error al actualizar producto"));
             }
         } else {
-            echo json_encode(array("message" => "Error, faltan datos para actualizar"));
+            echo json_encode(array("message" => "Error, faltan datos"));
         }
         break;
     case "DELETE":
@@ -59,8 +61,11 @@ switch ($metodo) {
                 echo json_encode(array("message" => "Error al eliminar producto"));
             }
         } else {
-            echo json_encode(array("message" => "Error, no se envió el ID del producto"));
+            echo json_encode(array("message" => "Error, faltan datos"));
         }
+        break;
+    default:
+        echo json_encode(array("message" => "Método no soportado"));
         break;
 }
 ?>
