@@ -27,7 +27,7 @@ include '../html/footer.php';
 ?>
 
 <!-- JavaScript para cargar los productos -->
-<script src="../../producto.js"></script>
+<script src="../producto.js"></script>
 
 </body>
 </html>
