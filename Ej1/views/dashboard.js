@@ -121,19 +121,19 @@ var eliminar = (UsuarioId) => {
     showCancelButton: true,
     confirmButtonColor: "#d33",
     cancelButtonColor: "#3085d6",
-    confirmButtonText: "Eliminar",
+    confirmButtonText: "Eliminar"
   }).then((result) => {
     if (result.isConfirmed) {
       $.ajax({
         url: "../controllers/Usuarios.controllers.php",
         type: "DELETE",
-        data: JSON.stringify({ UsuarioId: UsuarioId }), // Datos enviados al servidor
-        contentType: "application/json", // Indicar el tipo de contenido que se está enviando
+        data: { UsuarioId: UsuarioId }, // Se envía el UsuarioId directamente sin JSON.stringify
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8", // Cambio a contentType adecuado para datos form-urlencoded
         success: function (response) {
           Swal.fire({
             title: "Eliminado",
             text: "El usuario fue eliminado con éxito.",
-            icon: "success",
+            icon: "success"
           }).then(() => {
             cargaTabla(); // Recargar la tabla para reflejar los cambios
           });
@@ -142,13 +142,37 @@ var eliminar = (UsuarioId) => {
           Swal.fire({
             title: "Error",
             text: "No se pudo eliminar el usuario.",
-            icon: "error",
+            icon: "error"
           });
         }
       });
     }
   });
 };
+
+function editarProducto(id) {
+  window.location.href = '/ruta/a/editor/productos?id=' + id; // Cambia esto según cómo manejes la edición
+}
+
+function eliminarProducto(id) {
+  if (confirm("¿Estás seguro de que quieres eliminar este producto?")) {
+      $.ajax({
+          url: '/ruta/a/tu/api/productos/eliminar', // Ajusta esta URL
+          method: 'POST',
+          data: { id: id },
+          success: function(response) {
+              // Recargar los productos
+              cargarProductos();
+              alert("Producto eliminado");
+          },
+          error: function() {
+              alert("Error al eliminar el producto");
+          }
+      });
+  }
+}
+
+
 
 
 init();
