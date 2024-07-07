@@ -94,14 +94,6 @@ var guardaryeditar = (e) => {
     },
   });
 };
-//var frm_usuarios = $("#frm_usuarios").serialize();
-/*$.post(
-    "../controllers/usuarios.controllers.php",
-    frm_usuarios,
-    (resultado) => {
-      console.log(resultado);
-    }
-  );*/
 
 var uno = async (UsuarioId) => {
   await cargarRoles();
@@ -124,7 +116,7 @@ var uno = async (UsuarioId) => {
 var eliminar = (UsuarioId) => {
   Swal.fire({
     title: "Usuarios",
-    text: "Esta seguro que desea eliminar el usuario???",
+    text: "¿Está seguro de que desea eliminar el usuario?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#d33",
@@ -132,27 +124,31 @@ var eliminar = (UsuarioId) => {
     confirmButtonText: "Eliminar",
   }).then((result) => {
     if (result.isConfirmed) {
-      $.delete(
-        "../controllers/Usuarios.controllers.php?UsuarioId=",
-        { UsuarioId: UsuarioId },
-        (resultado) => {
-          if (resultado) {
-            Swal.fire({
-              title: "Usuarios",
-              text: "Se eliminar con exito",
-              icon: "success",
-            });
-          } else {
-            Swal.fire({
-              title: "Usuairos!",
-              text: "No se pudo eliminar",
-              icon: "danger",
-            });
-          }
+      $.ajax({
+        url: "../controllers/Usuarios.controllers.php",
+        type: "DELETE",
+        data: JSON.stringify({ UsuarioId: UsuarioId }), // Datos enviados al servidor
+        contentType: "application/json", // Indicar el tipo de contenido que se está enviando
+        success: function (response) {
+          Swal.fire({
+            title: "Eliminado",
+            text: "El usuario fue eliminado con éxito.",
+            icon: "success",
+          }).then(() => {
+            cargaTabla(); // Recargar la tabla para reflejar los cambios
+          });
+        },
+        error: function () {
+          Swal.fire({
+            title: "Error",
+            text: "No se pudo eliminar el usuario.",
+            icon: "error",
+          });
         }
-      );
+      });
     }
   });
 };
+
 
 init();

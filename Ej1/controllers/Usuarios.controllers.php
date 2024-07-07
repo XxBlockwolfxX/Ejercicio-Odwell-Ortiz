@@ -98,20 +98,33 @@ switch ($metodo) {
 
 
         break;
+
     case "DELETE":
-        $datos = json_decode(file_get_contents('php://input'));
-        if (!empty($datos->UsuarioId)) {
-            try {
-                $eliminar = array();
-                $eliminar = $usuario->eliminar($datos->UsuarioId);
-                echo json_encode(array("message" => "Se elimino correctamente"));
-            } catch (Exception $th) {
-                echo json_encode(array("message" => "Error, no se elimino"));
-            }
+    $datos = json_decode(file_get_contents('php://input'));
+
+    if (!empty($datos->UsuarioId)) {
+        $UsuarioId = $datos->UsuarioId;
+        $eliminar = $usuario->eliminar($UsuarioId);
+
+        if ($eliminar) {
+            header('Content-Type: application/json');
+            echo json_encode(array("message" => "Se eliminó correctamente"));
+            exit();
         } else {
-            echo json_encode(array("message" => "Error, no se envio el id"));
+            header('Content-Type: application/json');
+            echo json_encode(array("message" => "Error, no se eliminó"));
+            exit();
         }
-        break;
+    } else {
+        header('Content-Type: application/json');
+        echo json_encode(array("message" => "Error, no se envió el ID"));
+        exit();
+    }
+    break;
+
+
+
+
     case "login":
 
         break;
